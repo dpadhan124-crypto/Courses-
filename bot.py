@@ -12,7 +12,7 @@ import requests
 
 # Render environment variables (falls back to your defaults if not set in Render Dashboard)
 BOT_TOKEN = os.getenv("BOT_TOKEN", "9210532213:AAGWUFB5KJAtB_r-0OBjrKGnTrfUqGjThRA").strip()
-GROUP_ID = int(os.getenv("GROUP_ID", "-1003969250236"))
+GROUP_ID = int(os.getenv("GROUP_ID", "-1003946250042"))
 PORT = int(os.getenv("PORT", "10000"))
 
 _admin_env = os.getenv("ADMIN_CHAT_ID", "").strip()
