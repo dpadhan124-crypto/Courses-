@@ -20,7 +20,7 @@ ADMIN_CHAT_ID: int | None = int(_admin_env) if _admin_env else None
 
 JSON_FILE = os.getenv("JSON_FILE", "arranged_by_id.json")
 PROGRESS_FILE = os.getenv("PROGRESS_FILE", "progress.json")
-MAX_RETRIES = int(os.getenv("MAX_RETRIES", "50"))
+MAX_RETRIES = int(os.getenv("MAX_RETRIES", "30"))
 RETRY_DELAY = float(os.getenv("RETRY_DELAY", "3"))       # Base backoff seconds for non-FloodWait errors
 PACING_DELAY = float(os.getenv("PACING_DELAY", "0.6"))   # Gentle delay between successful uploads
 
@@ -154,8 +154,7 @@ def load_json_safe(path: str, default):
         except json.JSONDecodeError:
             last_obj_end = content.rfind("}")
             if last_obj_end != -1:
-                trimmed = content[: last_obj_end + 1].rstrip().rstrip(",") + "
-]"
+                trimmed = content[: last_obj_end + 1].rstrip().rstrip(",") + "\n]"
                 return json.loads(trimmed)
             raise
 
@@ -270,8 +269,7 @@ def build_caption(subject: str, topic: str) -> str:
     subj_upper_bold = f"<b>{html.escape((subject or '').strip().upper())}</b>"
     topic_sentence = html.escape(to_sentence_case(topic))
     return (
-        f"<blockquote>SUBJECT &gt; {subj_upper_bold}
-"
+        f"<blockquote>SUBJECT &gt; {subj_upper_bold}\n"
         f"TOPIC &gt; {topic_sentence}</blockquote>"
     )
 
@@ -433,8 +431,7 @@ def format_stats_message() -> str:
     if snap["last_error"]:
         lines.append(f"<b>Last Error:</b> <code>{html.escape(snap['last_error'][:200])}</code>")
 
-    return "
-".join(lines)
+    return "\n".join(lines)
 
 
 def send_bot_message(chat_id: int, text: str, with_keyboard: bool = True) -> None:
@@ -587,8 +584,7 @@ def handle_message(msg: dict) -> None:
     cmd = text.split()[0].lower() if text else ""
     if cmd.startswith("/start"):
         welcome = (
-            "<b>🤖 Topic Uploader Control Panel</b>
-"
+            "<b>🤖 Topic Uploader Control Panel</b>\n"
             "Use the buttons below to monitor real-time progress, pause or resume uploads, "
             "or download <code>progress.json</code>."
         )
@@ -776,8 +772,7 @@ def run_uploader() -> None:
             send_progress_document(
                 cid,
                 caption=(
-                    f"✅ <b>All {total_count} items uploaded!</b>
-"
+                    f"✅ <b>All {total_count} items uploaded!</b>\n"
                     f"Here is your final <code>{os.path.basename(PROGRESS_FILE)}</code> file."
                 ),
             )
@@ -790,8 +785,7 @@ def run_uploader() -> None:
 
 
 def handle_shutdown_signal(signum, frame):
-    print(f"
-[SIGNAL {signum}] Graceful shutdown requested...", flush=True)
+    print(f"\n[SIGNAL {signum}] Graceful shutdown requested...", flush=True)
     stop_event.set()
 
 
