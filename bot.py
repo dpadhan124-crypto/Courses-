@@ -20,7 +20,7 @@ ADMIN_CHAT_ID: int | None = int(_admin_env) if _admin_env else None
 
 JSON_FILE = os.getenv("JSON_FILE", "arranged_by_id.json")
 PROGRESS_FILE = os.getenv("PROGRESS_FILE", "progress.json")
-MAX_RETRIES = int(os.getenv("MAX_RETRIES", "30"))
+MAX_RETRIES = int(os.getenv("MAX_RETRIES", "50"))
 RETRY_DELAY = float(os.getenv("RETRY_DELAY", "3"))       # Base backoff seconds for non-FloodWait errors
 PACING_DELAY = float(os.getenv("PACING_DELAY", "0.6"))   # Gentle delay between successful uploads
 
